@@ -288,34 +288,6 @@ void Raster::drawTriangle2D_DotProduct(Triangle2D t1) {
 		cout << "Please enter distinct x points for the triangle" << endl;
 	}
 
-	if (t1.v1.y > t1.v2.y) {
-		float tempY = t1.v1.y;
-		float tempX = t1.v1.x;
-		t1.v1.y = t1.v2.y;
-		t1.v1.x = t1.v2.x;
-		t1.v2.y = tempY;
-		t1.v2.x = tempX;
-	}
-
-	if (t1.v1.y > t1.v3.y) {
-		float tempY = t1.v1.y;
-		float tempX = t1.v1.x;                                                                                                                                                                                                                                                                                                                           
-		t1.v1.y = t1.v3.y;
-		t1.v1.x = t1.v3.x;
-		t1.v3.y = tempY;
-		t1.v3.x = tempX;
-	}
-
-	if (t1.v2.y < t1.v3.y) {
-		float tempY = t1.v2.y;
-		float tempX = t1.v2.x;
-		t1.v2.y = t1.v3.y;
-		t1.v2.x = t1.v3.x;
-		t1.v3.y = tempY;
-		t1.v3.x = tempX;
-	}
-
-
 	float sortingX[] = { t1.v1.x, t1.v2.x, t1.v3.x };
 	float sortingY[] = { t1.v1.y, t1.v2.y, t1.v3.y };
 	float xMax = sortingX[0];
@@ -388,34 +360,6 @@ void Raster::drawTriangle_Barycentric(Triangle2D T) {
 	{
 		cout << "Please enter distinct x points for the triangle" << endl;
 	}
-	
-	if (T.v1.y > T.v2.y) {
-		float tempY = T.v1.y;
-		float tempX = T.v1.x;
-		T.v1.y = T.v2.y;
-		T.v1.x = T.v2.x;
-		T.v2.y = tempY;
-		T.v2.x = tempX;
-	}
-
-	if (T.v1.y > T.v3.y) {
-		float tempY = T.v1.y;
-		float tempX = T.v1.x;
-		T.v1.y = T.v3.y;
-		T.v1.x = T.v3.x;
-		T.v3.y = tempY;
-		T.v3.x = tempX;
-	}
-
-	if (T.v2.y < T.v3.y) {
-		float tempY = T.v2.y;
-		float tempX = T.v2.x;
-		T.v2.y = T.v3.y;
-		T.v2.x = T.v3.x;
-		T.v3.y = tempY;
-		T.v3.x = tempX;
-	}
-	
 	
 	float sortingX[] = { T.v1.x, T.v2.x, T.v3.x };
 	float sortingY[] = { T.v1.y, T.v2.y, T.v3.y };

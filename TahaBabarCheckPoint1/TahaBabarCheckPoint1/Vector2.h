@@ -19,6 +19,22 @@ struct Vector2
 
 };
 
-	float determinant(Vector2 a, Vector2 b);
+struct Vector4
+{
+	float x;
+	float y;
+	float z;
+	float w;
+	Vector4();
+	Vector4(float pX, float pY, float pZ, float pW);
+	Vector4 operator+(Vector4& other);
+	Vector4 operator-(Vector4& other);
+	Vector4 operator*(float other);
+	float magnitude();
+	Vector4 normalize();
+	float dot(Vector4 other);
+};
+
+float determinant(Vector2 a, Vector2 b);
 
 #endif

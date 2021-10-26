@@ -59,3 +59,61 @@ float determinant(Vector2 a, Vector2 b) {
 	float result = (b.x * a.y) - (a.x * b.y);
 	return result;
 }
+
+Vector4::Vector4()
+{
+	x = 0.0;
+	y = 0.0;
+	z = 0.0;
+	w = 0.0;
+}
+
+Vector4::Vector4(float pX, float pY, float pZ, float pW)
+{
+	x = pX;
+	y = pY;
+	z = pZ;
+	w = pW;
+}
+
+Vector4::operator*(float other)
+{
+	Vector4 result = Vector4(x * other, y * other, z * other, w * other);
+	return result;
+}
+
+Vector4::operator+(Vector4& other)
+{
+	Vector4 result = Vector4(x + other.x, y + other.y, z + other.z, w + other.w);
+	return result;
+}
+
+Vector4::operator-(Vector4& other)
+{
+	Vector4 result = Vector4(x - other.x, y - other.y, z - other.z, w - other.w);
+	return result;
+}
+
+float Vector4::magnitude()
+{
+	float result = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+	return result;
+}
+
+Vector4::normalize() {
+	Vector4 result;
+	float magnitudeResult = 1 / magnitude();
+	result.x = magnitudeResult * x;
+	result.y = magnitudeResult * y;
+	result.z = magnitudeResult * z;
+	result.w = magnitudeResult * w;
+	return result;
+}
+
+float Vector4::dot(Vector4 input) {
+	float result = (x * input.x) + (y * input.y) + (z * input.z) + (w * input.w);
+	return result;
+}
+
+
+

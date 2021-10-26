@@ -5,6 +5,7 @@ using namespace std;
 #include "Raster.h"
 #include "Triangle2D.h"
 #include "Vector2.h"
+#include "Matrix.h"
 
 
 int main() {/*
@@ -57,6 +58,7 @@ int main() {/*
 	
 	//cout << "Done" << endl;
 
+	/*
 	Raster myRaster(100, 100, White);
 	Triangle2D myTriangle(Vector2(2, 15), Vector2(72, 10), Vector2(45, 80), Red, Green, Blue);
 	myRaster.drawLineDDA(0, 20, 0, 80, Red);
@@ -70,6 +72,12 @@ int main() {/*
 	//myRaster.drawTriangle2D_DotProduct(myTriangle);
 	myRaster.writeToPPM();
 	cout << "done" << endl;
+	*/
+
+	Matrix4 A(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+	Matrix B(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
+	Matrix C = A * B;
+	C.print();
 	return 0;
 };
 
