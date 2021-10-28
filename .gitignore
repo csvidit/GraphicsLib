@@ -31,4 +31,4 @@
 *.out
 *.app
 
-.vs/GraphicsLib/v16/*
+.vs/*
