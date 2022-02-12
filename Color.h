@@ -1,3 +1,5 @@
+
+
 #ifndef Color_h
 #define Color_h
 #define Red Color(1.0,0.0,0.0,1.0)
@@ -18,10 +20,10 @@ struct Color
     Color();
     Color(float pRed, float pGreen, float pBlue, float pAlpha);
     Color operator+(Color other);
-    Color operator-(Color other);
+    Color operator-(Color& other);
     Color operator*(float other);
     void clamp();
 
 };
 
-#endif /* Color_hpp */
+#endif 

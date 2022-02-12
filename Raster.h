@@ -1,3 +1,5 @@
+
+
 #ifndef Raster_h
 #define Raster_h
 #include "Color.h"
@@ -14,7 +16,10 @@ public:
     int getHeight();
     Color getColorPixel(int x, int y);
     void setColorPixel(int x, int y, Color pFillColor);
+    float getDepthPixel(int x, int y);
+    void setDepthPixel(int x, int y, float depth);
     void clear(Color pFillColor);
+    void clear(float depth);
     void writeToPPM();
     void drawLineDDA(float x1, float y1, float x2, float y2, Color fillColor);
     void drawLine_DDA_Interpolated(float x1, float y1, float x2, float y2, Color color1, Color color2);
@@ -26,10 +31,11 @@ private:
     int width;
     int height;
     Color* pixels;
+    float* depthPixels;
     bool inside(float x, float y, Triangle2D t);
-
-
+    
+    
 };
 
 
-#endif /* Raster_hpp */
+#endif 

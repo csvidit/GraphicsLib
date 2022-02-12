@@ -1,3 +1,5 @@
+
+
 #include "Triangle2D.h"
 #include "Raster.h"
 #include "Vector2.h"
@@ -36,11 +38,15 @@ void Triangle2D::calculateBarycentricCoordinates(Vector2 P, float& lambda1, floa
 
 Triangle3D::Triangle3D()
 {
-    v1 = Vector4(0, 0, 0, 1);
-    v2 = Vector4(0, 0, 0, 1);
-    v3 = Vector4(0, 0, 0, 1);
+    v1 = Vector4(0.0, 0.0, 0.0, 1.0);
+    v2 = Vector4(0.0, 0.0, 0.0, 1.0);
+    v3 = Vector4(0.0, 0.0, 0.0, 1.0);
+    
+    c1 = White;
+		c2 = White;
+		c3 = White;
 
-    c1 = c2 = c3 = White;
+    shouldDraw = true;
 }
 
 Triangle3D::Triangle3D(Vector4 pV1, Vector4 pV2, Vector4 pV3, Color pC1, Color pC2, Color pC3)
@@ -48,10 +54,12 @@ Triangle3D::Triangle3D(Vector4 pV1, Vector4 pV2, Vector4 pV3, Color pC1, Color p
     v1 = pV1;
     v2 = pV2;
     v3 = pV3;
-
+    
     c1 = pC1;
     c2 = pC2;
     c3 = pC3;
+
+    shouldDraw = true;
 }
 
 void Triangle3D::transform(Matrix4 other)
@@ -66,15 +74,13 @@ void Triangle3D::transform(Matrix4 other)
 
 Triangle2D::Triangle2D(Triangle3D T)
 {
-    v1.x = T.v1.x;
-    v2.x = T.v2.x;
-    v3.x = T.v3.x;
-
-    v1.y = T.v1.y;
-    v2.y = T.v2.y;
-    v3.y = T.v3.y;
+		v1 = Vector2(T.v1.x, T.v1.y);
+		v2 = Vector2(T.v2.x, T.v2.y);
+		v3 = Vector2(T.v3.x, T.v3.y);
 
     c1 = T.c1;
     c2 = T.c2;
     c3 = T.c3;
 }
+
+

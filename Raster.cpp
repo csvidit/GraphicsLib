@@ -1,3 +1,4 @@
+
 #include "Raster.h"
 #include "Vector2.h"
 #include "Color.h"
@@ -6,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
+#include <limits>
 
 
 using namespace std;
@@ -14,6 +16,7 @@ Raster::Raster() {
     width = 0;
     height = 0;
     pixels = NULL;
+    depthPixels = NULL;
 }
 
 Raster::Raster(int pWidth, int pHeight, Color pFillColor)
@@ -21,15 +24,16 @@ Raster::Raster(int pWidth, int pHeight, Color pFillColor)
     width = pWidth;
     height = pHeight;
     pixels = new Color[width * height];
+    depthPixels = new float[width * height];
     for (int i = 0; i < width * height; i++) {
         pixels[i] = pFillColor;
+        depthPixels[i] = numeric_limits<float>::max();
     }
-    //Background = pFillColor;
-
 }
 
 Raster::~Raster() {
     delete[] pixels;
+    delete[] depthPixels;
 }
 
 int Raster::getWidth() {
@@ -47,10 +51,22 @@ Color Raster::getColorPixel(int x, int y) {
         return pixels[calculation];
     }
     else {
-        //cout << "Please enter x and y within the width and height range." << endl;
         return Black;
     }
 }
+
+float Raster::getDepthPixel(int x, int y) {
+    if (x < width && y < height && x >= 0 && y >= 0) {
+        int calculation = ((height - 1 - y) * width + x);
+
+        return depthPixels[calculation];
+    }
+    else {
+        return numeric_limits<float>::max();
+    }
+}
+
+
 
 void Raster::setColorPixel(int x, int y, Color pFillColor)
 {
@@ -60,14 +76,27 @@ void Raster::setColorPixel(int x, int y, Color pFillColor)
         pixels[calculation] = pFillColor;
 
     }
-    //else {
-    //    cout << "Please enter x and y within the width and height range." << endl;
-    //}
+}
+
+void Raster::setDepthPixel(int x, int y, float depth)
+{
+    if (x < width && y < height && x >= 0 && y >= 0) {
+        int calculation = ((height - 1 - y) * width + x);
+
+        depthPixels[calculation] = depth;
+
+    }
 }
 
 void Raster::clear(Color pFillColor) {
     for (int i = 0; i < width * height; i++) {
         pixels[i] = pFillColor;
+    }
+}
+
+void Raster::clear(float depth) {
+    for (int i = 0; i < width * height; i++) {
+        depthPixels[i] = depth;
     }
 }
 
@@ -78,7 +107,7 @@ void Raster::writeToPPM() {
     file1 << width << " " << height << endl;
     file1 << "255" << endl;
     Color start;
-
+    
     for (int i = height - 1 ; i >= 0 ; i--) {
         for (int j = 0; j < width; j++) {
             start = getColorPixel(j, i);
@@ -89,12 +118,12 @@ void Raster::writeToPPM() {
         }
         file1 << "\n";
     }
-
+    
     file1.close();
 }
 
 void Raster::drawLineDDA(float x1, float y1, float x2, float y2, Color fillColor) {
-
+    
     if (x2 == x1) { //vertical lines
         if (y2 < y1) {
             float temp = y1;
@@ -112,8 +141,8 @@ void Raster::drawLineDDA(float x1, float y1, float x2, float y2, Color fillColor
         }
         return;
     }
-
-
+    
+    
     if (x2 < x1) {
         float temp = x1;
         x1 = x2;
@@ -124,7 +153,7 @@ void Raster::drawLineDDA(float x1, float y1, float x2, float y2, Color fillColor
     }
 
     float calculationOne = (y2 - y1) / (x2 - x1);
-
+    
     if (calculationOne >= -1 && calculationOne <= 1)
     {
         float y = y1;
@@ -173,7 +202,7 @@ void Raster::drawLine_DDA_Interpolated(float x1, float y1, float x2, float y2, C
     Vector2 v2(x2, y2);
     Vector2 v3 = v2 - v1;
     float v1Full = v3.magnitude();
-
+    
     if (x2 == x1) { //vertical lines
         if (y2 < y1) {
             float temp = y1;
@@ -205,8 +234,8 @@ void Raster::drawLine_DDA_Interpolated(float x1, float y1, float x2, float y2, C
         }
         return;
     }
-
-
+    
+    
     if (x2 < x1) {
         float temp = x1;
         x1 = x2;
@@ -215,9 +244,9 @@ void Raster::drawLine_DDA_Interpolated(float x1, float y1, float x2, float y2, C
         y1 = y2;
         y2 = temp;
     }
-
-
-
+    
+    
+    
 
     float calculationOne = (y2 - y1) / (x2 - x1);
 
@@ -325,7 +354,7 @@ void Raster::drawTriangle_DotProduct(Triangle2D t1) {
         for (int y = yMin; y <= yMax; y++) {
             if (inside(x, y, t1))
             {
-                setColorPixel(x, y, t1.c1); //the method can be changed to take user input on color
+                setColorPixel(x, y, t1.c1); 
             }
         }
     }
@@ -357,26 +386,20 @@ bool Raster::inside(float x, float y, Triangle2D t) {
 
 
 void Raster::drawTriangle3D_Barycentric(Triangle3D T) {
-
-    Triangle2D myTri(T);
-
-    if (T.v1.x == T.v2.x || T.v2.x == T.v3.x || T.v1.x == T.v3.x)
-    {
-        cout << "Please enter distinct x points for the triangle" << endl;
+    if (T.shouldDraw == false){
+      return;
     }
 
+    else{
+    Triangle2D myTri(T);
+    
     float sortingX[] = { T.v1.x, T.v2.x, T.v3.x };
     float sortingY[] = { T.v1.y, T.v2.y, T.v3.y };
-    float sortingZ[] = { T.v1.z, T.v2.z, T.v3.z };
-    //float sortingW[] = { T.v1.w, T.v2.w, T.v3.w };
+
     float xMax = sortingX[0];
     float xMin = sortingX[0];
     float yMax = sortingY[0];
     float yMin = sortingY[0];
-    float zMax = sortingZ[0];
-    float zMin = sortingZ[0];
-    //float wMax = sortingW[0];
-    //float wMin = sortingW[0];
 
     for (int i = 0; i < 3; i++)
     {
@@ -401,46 +424,27 @@ void Raster::drawTriangle3D_Barycentric(Triangle3D T) {
             yMin = sortingY[i];
         }
     }
+    
 
-    for (int i = 0; i < 3; i++)
-    {
-        if (sortingZ[i] > zMax)
-        {
-            zMax = sortingZ[i];
-        }
-        else if (sortingZ[i] < zMin)
-        {
-            zMin = sortingZ[i];
-        }
-    }
-
-//    for (int i = 0; i < 3; i++)
-//    {
-//        if (sortingW[i] > wMax)
-//        {
-//            wMax = sortingW[i];
-//        }
-//        else if (sortingW[i] < wMin)
-//        {
-//            wMin = sortingW[i];
-//        }
-//    }
-
-    float lambda1 = 0;
-    float lambda2 = 0;
-    float lambda3 = 0;
     for (int x = xMin; x <= xMax; x++) {
         for (int y = yMin; y <= yMax; y++) {
-            for (int z = zMin; z <= zMax; z++){
-            Vector2 p(x,y);
-                myTri.calculateBarycentricCoordinates(p, lambda1, lambda2, lambda3);
-            if (lambda1 >= 0 && lambda1 <= 1 && lambda2 >= 0 && lambda2 <= 1 && lambda3 >= 0 && lambda3 <= 1) {
-                setColorPixel(x, y, Color(lambda1, lambda2, lambda3, 1.0f));
+
+						    float lambda1 = 0.0;
+    						float lambda2 = 0.0;
+    						float lambda3 = 0.0;
+ 
+                myTri.calculateBarycentricCoordinates(Vector2(float(x), float(y)), lambda1, lambda2, lambda3);
+            if (lambda1 >= 0.0 && lambda1 <= 1.0 && lambda2 >= 0.0 && lambda2 <= 1.0 && lambda3 >= 0.0 && lambda3 <= 1.0) {
+
+                if((T.v1.z*lambda1 + T.v2.z*lambda2 + T.v3.z*lambda3) < getDepthPixel(x, y)){
+								setColorPixel(x, y, T.c1*lambda1 + T.c2*lambda2 + T.c3*lambda3);
+                setDepthPixel(x, y, T.v1.z*lambda1 + T.v2.z*lambda2 + T.v3.z*lambda3);
+                }
             }
         }
     }
 }
-
+    
 }
 
 void Raster::drawModel(Model m)
@@ -450,3 +454,5 @@ void Raster::drawModel(Model m)
         drawTriangle3D_Barycentric(m[i]);
     }
 }
+
+

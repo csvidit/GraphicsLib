@@ -1,3 +1,5 @@
+
+
 #include "Matrix.h"
 #include <string>
 #include <iostream>
@@ -51,28 +53,23 @@ Matrix4::Matrix4(float pix, float pjx, float pkx, float pox,
 
 Vector4 Matrix4::operator*(Vector4 other)
 {
-    Vector4 result;
+  
+	Vector4 result;
     result.x = (other.x * ix) + (other.y * jx) + (other.z * kx) + (other.w * ox);
-    //Vector4(ix,iy,iz,iw) * (other.x);
-    //result.y = Vector4(jx, jy, jz, jw) * (other.y);
-   // result.z = Vector4(kx, ky, kz, kw) * (other.z);
-    //result.w = Vector4(ox, oy, oz, ow) * (other.w);
     result.y = (other.x * iy) + (other.y * jy) + (other.z * ky) + (other.w * oy);
     result.z = (other.x * iz) + (other.y * jz) + (other.z * kz) + (other.w * oz);
     result.w = (other.x * iw) + (other.y * jw) + (other.z * kw) + (other.w * ow);
     return result;
+
+
 }
 
 Matrix4 Matrix4::operator*(Matrix4 other)
 {
-    Vector4 one = Vector4(other.ix, other.iy, other.iz, other.iw);
+	Vector4 one = Vector4(other.ix, other.iy, other.iz, other.iw);
     Vector4 two = Vector4(other.jx, other.jy, other.jz, other.jw);
     Vector4 three = Vector4(other.kx, other.ky, other.kz, other.kw);
     Vector4 four = Vector4(other.ox, other.oy, other.oz, other.ow);
-    //Matrix4 prev(ix,jx,kx,ox,
-      //           iy,jy,ky,oy,
-        //         iz,jz,kz,oz,
-          //       iw,jw,kw,ow);
     one =  *this * one;
     two = *this * two;
     three=  *this * three;
@@ -94,41 +91,9 @@ Matrix4 Matrix4::operator*(Matrix4 other)
     result.oy = four.y;
     result.oz = four.z;
     result.ow = four.w;
-
-//    prev.ix= next1.x;
-//    prev.iy = next1.y;
-//    prev.iz= next1.z;
-//    prev.iw = next1.w;
-//    prev.jx= next2.x;
-//    prev.jy = next2.y;
-//    prev.jz= next2.z;
-//    prev.jw = next2.w;
-//    prev.kx= next3.x;
-//    prev.ky = next3.y;
-//    prev.kz= next3.z;
-//    prev.kw = next3.w;
-//    prev.ox= next4.x;
-//    prev.oy = next4.y;
-//    prev.oz= next4.z;
-//    prev.ow = next4.w;
-//    Matrix4 result = Matrix4(col1.x, col2.x, col3.x, col4.x,
-//        col1.y, col2.y, col3.y, col4.y,
-//        col1.z, col2.z, col3.z, col4.z,
-//        col1.w, col2.w, col3.w, col4.w);
-        return result;
-
-
-    //return prev;
-   // Vector4 col88 = (*this) * Vector4(other.ix, other.iy, other.iz, other.iw);
-//    Vector4 col2 = (*this) * Vector4(other.jx, other.jy, other.jz, other.jw);
-//    Vector4 col3 = (*this) * Vector4(other.kx, other.ky, other.kz, other.kw);
-//    Vector4 col4 = (*this) * Vector4(other.ox, other.oy, other.oz, other.ow);
-//    Matrix4 result = Matrix4(col1.x, col2.x, col3.x, col4.x,
-//    col1.y, col2.y, col3.y, col4.y,
-//    col1.z, col2.z, col3.z, col4.z,
-//    col1.w, col2.w, col3.w, col4.w);
-//    return result;
+		return result;
 }
+
 Matrix4 Translate3D(float tX, float tY, float tZ)
 {
 Matrix4 translate3D = Matrix4(1, 0, 0, tX,
@@ -153,8 +118,8 @@ Matrix4 RotateX3D(float degrees)
 float radians = degrees * M_PI / 180.0;
 Matrix4 rotateX3D =
 Matrix4(1, 0, 0, 0,
-0, cos(radians), sin(radians), 0,
-0, -sin(radians), cos(radians), 0,
+0, cosf(radians), sinf(radians), 0,
+0, -sinf(radians), cosf(radians), 0,
 0, 0, 0, 1);
 return rotateX3D;
 }
@@ -163,9 +128,9 @@ Matrix4 RotateY3D(float degrees)
 {
 float radians = degrees * M_PI / 180.0;
 Matrix4 rotateY3D =
-Matrix4(cos(radians), 0, -sin(radians), 0,
+Matrix4(cosf(radians), 0, -sinf(radians), 0,
 0, 1, 0, 0,
-sin(radians), 0, cos(radians), 0,
+sinf(radians), 0, cosf(radians), 0,
 0, 0, 0, 1);
 return rotateY3D;
 }
@@ -174,10 +139,10 @@ return rotateY3D;
 Matrix4 RotateZ3D(float degrees)
 {
 
-float radians = degrees * M_PI / 180.0;
+float radians = degrees * (M_PI / 180.0);
 Matrix4 rotateZ3D =
-Matrix4(cos(radians), sin(radians), 0, 0,
--sin(radians), cos(radians), 0, 0,
+Matrix4(cosf(radians), sinf(radians), 0, 0,
+-sinf(radians), cosf(radians), 0, 0,
 0, 0, 1, 0,
 0, 0, 0, 1);
 return rotateZ3D;
@@ -185,26 +150,64 @@ return rotateZ3D;
 
 Matrix4 Rotate3D(float degreesX, float degreesY, float degreesZ)
 {
-//    Matrix4 rotateX = RotateX3D(degreesX);
-//    Matrix4 rotateY = RotateY3D(degreesY);
-//    Matrix4 rotateZ = RotateZ3D(degreesZ);
-//    Matrix4 rotate3D = rotateX * rotateY * rotateZ;
+
     Matrix4 rotate3D = RotateX3D(degreesX) * RotateY3D(degreesY) * RotateZ3D(degreesZ);
 return rotate3D;
 }
 
 Matrix4 Rotate3D(float degrees, Vector4 vec)
 {
-    float alpha = atanf(vec.x/vec.z);
+		float alpha = atanf(vec.x/vec.z);
     float beta = acosf(vec.y/vec.magnitude());
+		alpha = alpha * (180.0/ M_PI);
+		beta = beta * (180.0/ M_PI);
     Matrix4 firstStep = RotateY3D(alpha);
-    Matrix4 SecondStep = RotateX3D(beta);
+    Matrix4 secondStep = RotateX3D(beta);
     Matrix4 thirdStep = RotateY3D(degrees);
     Matrix4 fourthStep = RotateX3D(-beta);
     Matrix4 fifthStep = RotateY3D(-alpha);
-    Matrix4 rotate3D = firstStep * SecondStep * thirdStep * fourthStep * fifthStep;
-//    Matrix4 rotate3D = RotateY3D(alpha)*RotateX3D(beta)*RotateY3D(degrees)*RotateX3D(-beta)*RotateY3D(-alpha);
+    Matrix4 rotate3D = fifthStep * fourthStep * thirdStep * secondStep * firstStep;
     return rotate3D;
+}
+
+Matrix4 LookAt(Vector4 eye, Vector4 spot, Vector4 up)
+{
+	Matrix4 newMatrix;
+	Vector4 look = (spot-eye).normalize();
+	Vector4 right = look.cross(up).normalize();
+	up = up.normalize();
+	newMatrix = Translate3D(-eye.x, -eye.y, -eye.z);
+	Matrix4 map = Matrix4(right.x, right.y, right.z, 0, up.x, up.y, up.z, 0, -look.x, -look.y, -look.z, 0, 0, 0, 0, 1);
+	return map*newMatrix;
+}
+
+Matrix4 Orthographic(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
+{
+	Matrix4 translate = Translate3D(-(minX + maxX)/2, -(minY + maxY)/2, -(minZ + maxZ)/2);
+	Matrix4 scale = Scale3D(2/(maxX - minX), 2/(maxY - minY), 2/(maxZ - minZ));
+	return scale*translate;
+}
+
+Matrix4 Perspective(float fovY, float aspect, float nearZ, float farZ)
+{
+	float F = 1/(tan((fovY* M_PI / 180.0)/2));
+	float val1 = (farZ + nearZ)/(nearZ - farZ);
+	float val2 = (2*nearZ*farZ)/(nearZ - farZ);
+	Matrix4 perspective = Matrix4(F/aspect, 0, 0, 0,
+																0, F, 0, 0,
+																0, 0, val1, val2,
+																0, 0, -1, 0);
+	return perspective;
+
+}
+
+Matrix4 Viewport(float x, float y, float width, float height)
+{
+	Matrix4 translate1 = Translate3D(x, y, 0);
+	Matrix4 scale1 = Scale3D(width, height, 1);
+	Matrix4 scale2 = Scale3D(0.5, 0.5, 0.5);
+	Matrix4 translate2 = Translate3D(1, 1, -1);
+	return translate1*scale1*scale2*translate2;
 }
 
 void Matrix4::print()
@@ -215,3 +218,4 @@ void Matrix4::print()
     cout << iw << " " << jw << " " << kw << " " << ow << endl;
 
 }
+

@@ -1,3 +1,4 @@
+
 #ifndef Matrix_h
 #define Matrix_h
 #include "Vector2.h"
@@ -37,5 +38,9 @@ Matrix4 RotateY3D(float degrees);
 Matrix4 RotateZ3D(float degrees);
 Matrix4 Rotate3D(float degreesX, float degreesY, float degreesZ);
 Matrix4 Rotate3D(float degrees, Vector4 vec);
+Matrix4 LookAt(Vector4 eye, Vector4 spot, Vector4 up);
+Matrix4 Orthographic(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+Matrix4 Perspective(float fovY, float aspect, float nearZ, float farZ);
+Matrix4 Viewport(float x, float y, float width, float height);
 
-#endif /* Matrix_hpp */
+#endif

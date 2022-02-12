@@ -1,3 +1,5 @@
+
+
 #include "Vector2.h"
 #include <string>
 #include <iostream>
@@ -79,7 +81,7 @@ Vector4::Vector4(float pX, float pY, float pZ, float pW)
 
 Vector4 Vector4::operator*(float other)
 {
-
+    
     Vector4 result = Vector4(other * x, other * y,  other * z, other * w);
     return result;
 }
@@ -120,3 +122,10 @@ void Vector4::print()
 {
     cout << x << " " << y << " " << z << " " << w << endl;
 }
+
+Vector4 Vector4::cross(Vector4 other)
+{
+	Vector4 crossProduct = Vector4(y*other.z - z*other.y, z*other.x - x*other.z, x*other.y - y*other.x, 1);
+	return crossProduct;
+}
+

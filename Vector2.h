@@ -1,3 +1,5 @@
+
+
 #ifndef Vector2_h
 #define Vector2_h
 
@@ -32,8 +34,9 @@ struct Vector4
     Vector4 normalize();
     float dot(Vector4 other);
     void print();
+		Vector4 cross(Vector4 other);
 };
 
 float determinant(Vector2 a, Vector2 b);
 
-#endif /* Vector2_hpp */
+#endif 

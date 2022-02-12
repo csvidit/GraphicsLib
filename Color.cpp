@@ -1,3 +1,5 @@
+
+
 #include "Color.h"
 #include <math.h>
 
@@ -19,7 +21,7 @@ Color::Color(float pRed, float pGreen, float pBlue, float pAlpha)
 
 void Color::clamp()
 {
-
+    
     red = fmin(red, 1.0f);
     red = fmax(red, 0.0f);
     blue = fmin(blue, 1.0f);
@@ -32,11 +34,17 @@ void Color::clamp()
 }
 
 Color Color::operator+(Color other) {
-    Color x = Color(red + other.red, green + other.green, blue + other.blue, alpha + other.alpha);
-    return x;
+
+	Color newColor(red, green, blue, alpha);
+	newColor.red += other.red;
+	newColor.green += other.green;
+	newColor.blue += other.blue;
+	newColor.alpha += other.alpha;
+	newColor.clamp(); 
+	return newColor;
 }
 
-Color Color::operator-(Color other) {
+Color Color::operator-(Color& other) {
     Color x = Color(red - other.red, green - other.green, blue - other.blue, alpha - other.alpha);
     return x;
 }
